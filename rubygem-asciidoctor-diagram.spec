@@ -6,7 +6,7 @@ Release: 1%{?dist}
 Summary: Asciidoctor diagramming extension
 License: MIT
 URL: https://github.com/asciidoctor/asciidoctor-diagram
-Source0: http://rubygems.org/gems/%{gem_name}-%{version}.gem
+Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel 
@@ -16,13 +16,13 @@ BuildRequires: ImageMagick
 BuildRequires: graphviz-ruby
 BuildRequires: gnuplot
 BuildRequires: plantuml
-BuildRequires: plantuml-javadoc
+BuildRequires: python-reportlab
 BuildRequires: ditaa
 BuildRequires: mscgen
-BuildRequires: nwdiag
-BuildRequires: seqdiag
+#BuildRequires: nwdiag
+#BuildRequires: seqdiag
 BuildRequires: rubygem(rspec)
-BuildRequires: rubygem(asciidoctor)
+BuildRequires: rubygem(prawn-svg)
 BuildRequires: rubygem(asciidoctor-pdf)
 BuildRequires: rubygem(bigdecimal)
 
@@ -32,6 +32,14 @@ BuildArch: noarch
 Asciidoctor Diagram is a set of Asciidoctor extensions that
 enables you to add diagrams, which you describe using
 plain text, to your AsciiDoc document.
+
+%package doc
+Summary: Documentation for %{name}
+Requires: %{name} = %{version}-%{release}
+BuildArch: noarch
+
+%description doc
+Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version}
@@ -46,20 +54,33 @@ cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
 
 %check
-rspec -rasciidoctor-diagram spec
+rspec -r asciidoctor-pdf --pattern "spec/blockdiag_spec.rb" \
+                         --pattern "spec/test_helper.rb" \
+                         --pattern "spec/ditaa_spec.rb" \
+                         --pattern "spec/msc_spec.rb" \
+                         --pattern "spec/plantuml_spec.rb" \
+                         --pattern "spec/gnuplot_spec.rb" \
+                         --pattern "spec/meme_spec.rb" \
+                         --pattern "spec/graphviz_spec.rb"
 
 %files
 %dir %{gem_instdir}
-%{_bindir}/%{gem_name}
-%{_bindir}/%{gem_name}-optimize
-%license %{gem_instdir}/LICENSE.adoc
-%doc %{gem_instdir}/README.adoc
-%{gem_instdir}/bin
-%{gem_instdir}/data
 %{gem_libdir}
 %exclude %{gem_cache}
 %{gem_spec}
+%license %{gem_instdir}/LICENSE.txt
+%exclude %{gem_instdir}/Rakefile
+%exclude %{gem_instdir}/testing
+%exclude %{gem_instdir}/*.list
+
+%files doc
+%doc %{gem_docdir}
+%doc %{gem_instdir}/*.adoc
+%doc %{gem_instdir}/examples
+%doc %{gem_instdir}/images
+%doc %{gem_instdir}/spec
+
 
 %changelog
-* Tue Oct 27 2020 Christopher Brown <chris.brown@redhat.com> - 2.0.5-1
+* Fri Nov 13 2020 Christopher Brown <chris.brown@redhat.com> - 2.0.5-1
 - 
