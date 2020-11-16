@@ -60,7 +60,7 @@ cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
 
 %check
-
+# Run the test excluding extensions which are not packaged yet
 rspec --exclude-pattern 'spec/{a2s_spec.rb,bpmn_spec.rb,bytefield_spec.rb,dpic_spec.rb,
                          erd_spec.rb,mermaid_spec.rb,nomnoml_spec.rb,pikchr_spec.rb,
                          umlet_spec.rb,vega_spec.rb,syntrax_spec.rb,
