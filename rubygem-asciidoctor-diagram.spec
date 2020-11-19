@@ -1,4 +1,8 @@
 %global gem_name asciidoctor-diagram
+# Many dependencies are not packaged in Fedora, mostly nodejs,
+# so this bcond can test with enabling those if they are
+# available in future.
+%bcond_with missing_test_dependencies
 
 Name: rubygem-%{gem_name}
 Version: 2.0.5
@@ -30,6 +34,25 @@ BuildRequires: TeXmacs
 BuildRequires: rubygem(rspec)
 BuildRequires: rubygem(asciidoctor)
 BuildRequires: rubygem(bigdecimal)
+# Not packaged in Fedora.
+%if %{with missing_test_dependencies}
+BuildRequires: %{_bindir}/a2s
+BuildRequires: %{_bindir}/bpmn
+BuildRequires: %{_bindir}/bytefield
+BuildRequires: %{_bindir}/dpic
+BuildRequires: %{_bindir}/erd
+BuildRequires: %{_bindir}/mermaid
+BuildRequires: %{_bindir}/nomnoml
+BuildRequires: %{_bindir}/pikchr
+BuildRequires: %{_bindir}/umlet
+BuildRequires: %{_bindir}/vega
+BuildRequires: %{_bindir}/syntrax
+BuildRequires: %{_bindir}/shaape
+BuildRequires: %{_bindir}/smcat
+BuildRequires: %{_bindir}/svgbob
+BuildRequires: %{_bindir}/symbolator
+BuildRequires: %{_bindir}/wavedrom
+%endif
 
 BuildArch: noarch
 
@@ -59,12 +82,16 @@ cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
 
 %check
+%if %{with missing_test_dependencies}
+rspec spec
+%else
 # Run the test excluding extensions which are not packaged yet
 rspec --exclude-pattern 'spec/{a2s_spec.rb,bpmn_spec.rb,bytefield_spec.rb,dpic_spec.rb,
                          erd_spec.rb,mermaid_spec.rb,nomnoml_spec.rb,pikchr_spec.rb,
                          umlet_spec.rb,vega_spec.rb,syntrax_spec.rb,
                          shaape_spec.rb,smcat_spec.rb,svgbob_spec.rb,
                          symbolator_spec.rb,wavedrom_spec.rb}'
+%endif
 
 %files
 %dir %{gem_instdir}
