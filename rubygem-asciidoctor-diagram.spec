@@ -28,8 +28,7 @@ BuildRequires: texlive-tkz-euclide
 BuildRequires: tikzit
 BuildRequires: TeXmacs
 BuildRequires: rubygem(rspec)
-BuildRequires: rubygem(prawn-svg)
-BuildRequires: rubygem(asciidoctor-pdf)
+BuildRequires: rubygem(asciidoctor)
 BuildRequires: rubygem(bigdecimal)
 
 BuildArch: noarch
