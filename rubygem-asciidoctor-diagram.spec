@@ -14,6 +14,7 @@ Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel 
+BuildRequires: %{_libdir}/libsmime3.so
 BuildRequires: %{_bindir}/blockdiag
 BuildRequires: %{_bindir}/convert
 BuildRequires: %{_bindir}/ditaa
