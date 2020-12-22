@@ -72,6 +72,7 @@ Documentation for %{name}.
 
 %prep
 %setup -q -n %{gem_name}-%{version}
+rm -f %{gem_libdir}/*.jar
 
 %build
 gem build ../%{gem_name}-%{version}.gemspec
@@ -113,5 +114,5 @@ rspec --exclude-pattern 'spec/{a2s_spec.rb,bpmn_spec.rb,bytefield_spec.rb,dpic_s
 
 
 %changelog
-* Mon Nov 16 2020 Christopher Brown <chris.brown@redhat.com> - 2.0.5-1
+* Tue Dec 22 2020 Christopher Brown <chris.brown@redhat.com> - 2.0.5-1
 - Initial build
